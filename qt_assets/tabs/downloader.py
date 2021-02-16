@@ -110,7 +110,7 @@ class StreamLoader(QObject):
             audio_streams = QTreeWidgetItem(['Audio Only'])
             tree_item = StreamTreeWidgetItem([video.title], f'video_{i}',
                                              self.__download_manager, video, None)
-            self.__download_manager.streams = video.streams.all()
+            self.__download_manager.streams = video.streams
             x = 0
             for stream in self.__download_manager.streams:
                 self.sig_step.emit(self.id, f'Loading stream {x}')
@@ -294,10 +294,10 @@ class DownloadTab(QWidget):
         self.proxies.setEnabled(False)
         self.stream_tree.setEnabled(False)
 
-        if job_id is 'load_streams':
+        if job_id == 'load_streams':
             thread.started.connect(worker.load_streams)
             self.btn_download.setText(f'Select Streams to Download')
-        elif job_id is 'download_streams':
+        elif job_id == 'download_streams':
             thread.started.connect(worker.download_streams)
         thread.start()
         self.thread_count += 1
